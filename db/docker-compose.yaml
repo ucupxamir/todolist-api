@@ -1,0 +1,15 @@
+version: '3'
+services:
+  oracle-xe:
+    image: gvenzl/oracle-xe
+    container_name: oracle_xe_db
+    environment:
+      - ORACLE_PASSWORD=root
+      - ORACLE_CHARACTERSET=AL32UTF8
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+volumes:
+  oracle_data:

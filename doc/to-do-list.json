@@ -1,0 +1,467 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "To Do List API",
+        "version": "1.0",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/license/mit"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://127.0.0.1:8080/api"
+        }
+    ],
+    "paths": {
+        "/tasks": {
+            "post": {
+                "operationId": "1",
+                "summary": "create new task",
+                "description": "insert task into database",
+                "security": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "completed"
+                                        ]
+                                    }
+                                },
+                                "required": ["title", "description", "status"]
+                            },
+                            "example": {
+                                "title": "Task title",
+                                "description": "Task description",
+                                "status": "pending"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success create new task",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "task": {
+                                            "$ref": "#/components/schemas/task"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Task created successfully",
+                                    "task": {
+                                        "id": 1,
+                                        "title": "Task title",
+                                        "description": "Task description",
+                                        "status": "pending"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed create new task if request is invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_400"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "failed create new task if got unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "operationId": "2",
+                "summary": "get all task",
+                "description": "get all task data from database",
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "success get all task data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/task"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "title": "Task title",
+                                        "description": "Task description",
+                                        "status": "pending"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "failed get all task if got unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_500"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tasks/{taskId}": {
+            "get": {
+                "operationId": "3",
+                "summary": "get task by id",
+                "description": "get task by id from database",
+                "security": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/taskId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success get task by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/task"
+                                },
+                                "example":   {
+                                    "id": 1,
+                                    "title": "Task title",
+                                    "description": "Task description",
+                                    "status": "pending"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed get task by id if id is invalid number",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errors": {
+                                            "type": "array",
+                                            "items": { "type": "string" }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "errors": [
+                                        "id must be a number"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed get task by id if task was not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "failed get task by id if got unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "4",
+                "summary": "update task",
+                "description": "update task by id from database",
+                "security": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/taskId"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "completed"
+                                        ]
+                                    }
+                                }
+                            },
+                            "example": {
+                                "title": "Task title update",
+                                "description": "Task description update",
+                                "status": "completed"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success update task",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "task": {
+                                            "$ref": "#/components/schemas/task"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Task updated successfully",
+                                    "task": {
+                                        "id": 1,
+                                        "title": "Task title update",
+                                        "description": "Task description update",
+                                        "status": "completed"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed update task if request is invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_400"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed update task if task was not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "failed update task if got unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_500"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "5",
+                "summary": "delete task",
+                "description": "delete task by id from database",
+                "security": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/taskId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success delete task",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Task deleted successfully"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "failed delete task by id if id is invalid number",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "errors": {
+                                            "type": "array",
+                                            "items": { "type": "string" }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "errors": [
+                                        "id must be a number"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "failed delete task if task was not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_404"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "failed delete task if got unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error_500"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "parameters": {
+            "taskId": {
+                "name": "taskId",
+                "in": "path",
+                "required": true,
+                "schema": { "type": "number" }
+            }
+        },
+        "schemas": {
+            "task": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "completed"
+                        ]
+                    }
+                }
+            },
+            "error_400": {
+                "type": "object",
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "example": {
+                    "errors": [
+                        "title is not allowed to be empty", 
+                        "description is not allowed to be empty", 
+                        "status must be one of [pending, completed]", 
+                        "status is not allowed to be empty"
+                    ]
+                }
+            },
+            "error_404": {
+                "type": "object",
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "example": {
+                    "errors": [
+                        "task was not found"
+                    ]
+                }
+            },
+            "error_500": {
+                "type": "object",
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "example": {
+                    "errors": [
+                        "internal server error"
+                    ]
+                }
+            }
+        }
+    }
+}

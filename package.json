@@ -1,0 +1,23 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "To do list RESTful API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js",
+    "test": "npx jest --verbose --runInBand"
+  },
+  "author": "Yusuf Amir Faisal",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "oracledb": "^6.6.0",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^7.0.0"
+  }
+}

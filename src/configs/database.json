@@ -1,0 +1,32 @@
+{
+  "development": {
+    "username": "system",
+    "password": "root",
+    "database": "XEPDB1",
+    "host": "127.0.0.1",
+    "dialect": "oracle",
+    "define": {
+      "timestamps": false
+    }
+  },
+  "test": {
+    "username": "system",
+    "password": "root",
+    "database": "XEPDB1",
+    "host": "127.0.0.1",
+    "dialect": "oracle",
+    "define": {
+      "timestamps": false
+    }
+  },
+  "production": {
+    "username": "system",
+    "password": "root",
+    "database": "XEPDB1",
+    "host": "127.0.0.1",
+    "dialect": "oracle",
+    "define": {
+      "timestamps": false
+    }
+  }
+}
